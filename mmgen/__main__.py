@@ -1,2 +1,4 @@
+import sys
 from mmgen.generator import main
-main()
+
+main(sys.argv)

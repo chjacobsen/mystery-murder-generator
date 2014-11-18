@@ -1,3 +1,7 @@
+import logging
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
+
 class Generator:
     """
     Used to generate a murder mystery
@@ -6,9 +10,14 @@ class Generator:
     """
 
     def generate(self):
-        print "Generating mystery"
+        logger.info("Generating new mystery")
+
+    def read_config(self, path):
+        logger.info("Reading config file: {0}".format(path))
 
     def main(self, args):
+        if len(args) > 1:
+            self.read_config(args[1])
         self.generate()
 
 def main(args=None):
