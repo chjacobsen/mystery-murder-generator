@@ -42,6 +42,7 @@ class Person:
         # Random last name
         self.last_name = random.choice(names.LAST_NAME)
 
+        # Random first name, based on gender
         if self.gender == 0:
             self.first_name = random.choice(names.FIRST_NAME_MALE)
         else:

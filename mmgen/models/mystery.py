@@ -17,9 +17,13 @@ class Mystery:
 
     def populate(self):
         logger.info("Generating {0} characters".format(self.num_characters))
+
+        # Generate some basic information for each person
         for n in range(self.num_characters):
             pers = person.Person()
             logger.info("Created person: {0} {1}".format(pers.first_name, pers.last_name))
+
+            # Generate a birth date. Each person has to be at least 18 years old
             pers.birth_date = random.randint(self.start_date, self.current_date - (3600 * 24 * 365 * 18))
             logger.info("Born: {0}".format(datetime.datetime.fromtimestamp(pers.birth_date).strftime("%Y-%m-%d")))
             self.people.append(pers)

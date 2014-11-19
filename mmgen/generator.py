@@ -15,20 +15,27 @@ class Generator:
     This object can the be used by one of the renderers to, for instance, save it to disk
     """
 
+    # Generator options, controls constraints for the algorithm
     options = {
         "MIN_CHARACTERS": 4,
         "MAX_CHARACTERS": 6,
+
+        # Note that a timestamp of zero represents 1970, and the earliest supported year is 1900
         "START_DATE": -3600 * 24 * 365 * 50,
         "CURRENT_DATE": -3600 * 24 * 365 * 10,
     }
 
     def generate(self):
+        """
+        Generate a new mystery and prints it using the selected renderer
+        """
         logger.info("Generating new mystery")
         myst = mystery.Mystery()
 
         myst.start_date = self.options["START_DATE"]
         myst.current_date = self.options["CURRENT_DATE"]
 
+        # Log the provided date span
         cfg_start_date = datetime.datetime.fromtimestamp(self.options["START_DATE"])
         cfg_current_date = datetime.datetime.fromtimestamp(self.options["CURRENT_DATE"])
         logger.info("Timespan: {0} - {1}".format(
@@ -36,16 +43,22 @@ class Generator:
                         cfg_current_date.strftime("%Y-%m-%d")
                     ))
 
+        # Check if the date span is valid
         if self.options["CURRENT_DATE"] <= self.options["START_DATE"]:
             raise InputConstraintException("The start date must be before the current date")
         if self.options["CURRENT_DATE"] - self.options["START_DATE"] < 3600 * 24 * 365 * 18:
             raise InputConstraintException("The timespan must be at least 18 years")
 
 
+        # Decide how many characters to generate
         myst.num_characters = random.randint(
                             self.options["MIN_CHARACTERS"],
                             self.options["MAX_CHARACTERS"])
+
+        # Populate the mystery object (the root object in a sense)
         myst.populate()
+
+        # Write the output as json (should be swappable later)
         print(JSONRenderer().render(myst))
 
 
