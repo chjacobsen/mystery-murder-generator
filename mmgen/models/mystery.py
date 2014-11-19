@@ -23,3 +23,18 @@ class Mystery:
             pers.birth_date = random.randint(self.start_date, self.current_date - (3600 * 24 * 365 * 18))
             logger.info("Born: {0}".format(datetime.datetime.fromtimestamp(pers.birth_date).strftime("%Y-%m-%d")))
             self.people.append(pers)
+
+    def encode(self):
+        """
+        Encodes the object as a data structure
+        Useful when writing output
+        """
+        out = {
+            "mystery_name": "Notorious crime",
+            "start_date": datetime.datetime.fromtimestamp(self.start_date).strftime("%Y-%m-%d"),
+            "current_date": datetime.datetime.fromtimestamp(self.current_date).strftime("%Y-%m-%d"),
+            "characters": []
+        }
+        for p in self.people:
+            out["characters"].append(p.encode())
+        return out

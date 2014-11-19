@@ -47,4 +47,17 @@ class Person:
         else:
             self.first_name = random.choice(names.FIRST_NAME_FEMALE)
 
-
+    def encode(self):
+        """
+        Encodes the object as a pure datastructure
+        Useful for writing output
+        """
+        out = {
+            "first_name": self.first_name,
+            "last_name": self.last_name,
+            "birth_date": datetime.datetime.fromtimestamp(self.birth_date).strftime("%Y-%m-%d"),
+            "attributes": {}
+        }
+        for att in self.attributes.keys():
+            out["attributes"][att] = self.attributes[att]
+        return out

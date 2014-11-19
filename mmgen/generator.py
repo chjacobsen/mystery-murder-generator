@@ -1,8 +1,10 @@
+from __future__ import print_function
 import logging
 import datetime
 import random
 from mmgen.models import mystery
 from mmgen.exceptions import InputConstraintException
+from mmgen.renderers.json import JSONRenderer
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
@@ -44,6 +46,8 @@ class Generator:
                             self.options["MIN_CHARACTERS"],
                             self.options["MAX_CHARACTERS"])
         myst.populate()
+        print(JSONRenderer().render(myst))
+
 
 
 
