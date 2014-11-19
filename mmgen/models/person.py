@@ -1,3 +1,5 @@
+import random
+from mmgen.data import names
 
 class Person:
     """
@@ -28,3 +30,16 @@ class Person:
         # Higher number means the person is more well educated
         "education": 0.0,
     }
+
+    def __init__(self):
+        self.gender = random.randint(0,1)
+
+        # Random last name
+        self.last_name = random.choice(names.LAST_NAME)
+
+        if self.gender == 0:
+            self.first_name = random.choice(names.FIRST_NAME_MALE)
+        else:
+            self.first_name = random.choice(names.FIRST_NAME_FEMALE)
+
+

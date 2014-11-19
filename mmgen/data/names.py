@@ -4,7 +4,7 @@ Contains lists of names
 It might be better to keep these in csv-files, json-files etc, but this approach works while the dataset is small
 """
 
-FIRST_NAME_MALE = set([
+FIRST_NAME_MALE = [
     "Abraham",
     "Andrew",
     "Brian",
@@ -15,9 +15,9 @@ FIRST_NAME_MALE = set([
     "Stephen",
     "Thomas",
     "William",
-])
+]
 
-FIRST_NAME_FEMALE = set([
+FIRST_NAME_FEMALE = [
     "Anna",
     "Barbara",
     "Cynthia",
@@ -28,9 +28,9 @@ FIRST_NAME_FEMALE = set([
     "Molly",
     "Patricia",
     "Susanne",
-])
+]
 
-LAST_NAME = set([
+LAST_NAME = [
     "Anderson",
     "Brown",
     "Davis",
@@ -41,4 +41,4 @@ LAST_NAME = set([
     "Smith",
     "Taylor",
     "Williams",
-])
+]
