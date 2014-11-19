@@ -1,5 +1,9 @@
 import random
+import datetime
+import logging
 from mmgen.data import names
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
 
 class Person:
     """

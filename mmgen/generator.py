@@ -1,6 +1,7 @@
 import logging
+import datetime
 import random
-from mmgen.models import mystery, person
+from mmgen.models import mystery
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
@@ -13,21 +14,27 @@ class Generator:
 
     options = {
         "MIN_CHARACTERS": 4,
-        "MAX_CHARACTERS": 6
+        "MAX_CHARACTERS": 6,
+        "START_DATE": -3600 * 24 * 365 * 50,
+        "CURRENT_DATE": -3600 * 24 * 365 * 10,
     }
 
     def generate(self):
         logger.info("Generating new mystery")
         myst = mystery.Mystery()
 
-        num_characters = random.randint(
+        myst.start_date = datetime.datetime.fromtimestamp(self.options["START_DATE"])
+        myst.current_date = datetime.datetime.fromtimestamp(self.options["CURRENT_DATE"])
+        logger.info("Timespan: {0} - {1}".format(
+                        myst.start_date.strftime("%Y-%m-%d"),
+                        myst.current_date.strftime("%Y-%m-%d")
+                    ))
+
+
+        myst.num_characters = random.randint(
                             self.options["MIN_CHARACTERS"],
                             self.options["MAX_CHARACTERS"])
-        logger.info("Generating {0} characters".format(num_characters))
-        for n in range(num_characters):
-            pers = person.Person()
-            logger.info("Created person: {0} {1}".format(pers.first_name, pers.last_name))
-            myst.people.append(pers)
+        myst.populate()
 
 
 
