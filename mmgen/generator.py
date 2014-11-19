@@ -2,6 +2,7 @@ import logging
 import datetime
 import random
 from mmgen.models import mystery
+from mmgen.exceptions import InputConstraintException
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
@@ -23,12 +24,20 @@ class Generator:
         logger.info("Generating new mystery")
         myst = mystery.Mystery()
 
-        myst.start_date = datetime.datetime.fromtimestamp(self.options["START_DATE"])
-        myst.current_date = datetime.datetime.fromtimestamp(self.options["CURRENT_DATE"])
+        myst.start_date = self.options["START_DATE"]
+        myst.current_date = self.options["CURRENT_DATE"]
+
+        cfg_start_date = datetime.datetime.fromtimestamp(self.options["START_DATE"])
+        cfg_current_date = datetime.datetime.fromtimestamp(self.options["CURRENT_DATE"])
         logger.info("Timespan: {0} - {1}".format(
-                        myst.start_date.strftime("%Y-%m-%d"),
-                        myst.current_date.strftime("%Y-%m-%d")
+                        cfg_start_date.strftime("%Y-%m-%d"),
+                        cfg_current_date.strftime("%Y-%m-%d")
                     ))
+
+        if self.options["CURRENT_DATE"] <= self.options["START_DATE"]:
+            raise InputConstraintException("The start date must be before the current date")
+        if self.options["CURRENT_DATE"] - self.options["START_DATE"] < 3600 * 24 * 365 * 18:
+            raise InputConstraintException("The timespan must be at least 18 years")
 
 
         myst.num_characters = random.randint(

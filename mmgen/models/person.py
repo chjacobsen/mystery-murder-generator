@@ -12,6 +12,7 @@ class Person:
     first_name = None
     last_name = None
     gender = None
+    birth_date = None
 
     # Personal attributes
     # Each attribute uses 0.0 as an average
