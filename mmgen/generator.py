@@ -17,8 +17,7 @@ class Generator:
 
     # Generator options, controls constraints for the algorithm
     options = {
-        "MIN_CHARACTERS": 4,
-        "MAX_CHARACTERS": 6,
+        "NB_CHARACTERS": 7,
 
         # Note that a timestamp of zero represents 1970, and the earliest supported year is 1900
         "START_DATE": -3600 * 24 * 365 * 50,
@@ -51,9 +50,7 @@ class Generator:
 
 
         # Decide how many characters to generate
-        myst.num_characters = random.randint(
-                            self.options["MIN_CHARACTERS"],
-                            self.options["MAX_CHARACTERS"])
+        myst.num_characters = self.options["NB_CHARACTERS"]
 
         # Populate the mystery object (the root object in a sense)
         myst.populate()
