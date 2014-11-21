@@ -13,6 +13,8 @@ class Person:
     last_name = None
     gender = None
     birth_date = None
+    is_murderer = False
+    is_victim = False
 
     # Personal attributes
     # Each attribute uses 0.0 as an average
@@ -57,6 +59,8 @@ class Person:
             "first_name": self.first_name,
             "last_name": self.last_name,
             "birth_date": datetime.datetime.fromtimestamp(self.birth_date).strftime("%Y-%m-%d"),
+            "is_victim": self.is_victim,
+            "is_murderer": self.is_murderer,
             "attributes": {}
         }
         for att in self.attributes.keys():

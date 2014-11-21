@@ -1,7 +1,9 @@
 import random
 import datetime
 import logging
+from mmgen.data import murder
 from mmgen.models import person
+from mmgen.util.randomize import weighted_roll
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
@@ -27,6 +29,10 @@ class Mystery:
             pers.birth_date = random.randint(self.start_date, self.current_date - (3600 * 24 * 365 * 18))
             logger.info("Born: {0}".format(datetime.datetime.fromtimestamp(pers.birth_date).strftime("%Y-%m-%d")))
             self.people.append(pers)
+        self.method = weighted_roll(murder.MURDER_METHOD)
+        self.motive = weighted_roll(murder.MURDER_MOTIVE)
+        self.people[0].is_victim = True
+        self.people[1].is_murderer = True
 
     def encode(self):
         """
@@ -37,6 +43,8 @@ class Mystery:
             "mystery_name": "Notorious crime",
             "start_date": datetime.datetime.fromtimestamp(self.start_date).strftime("%Y-%m-%d"),
             "current_date": datetime.datetime.fromtimestamp(self.current_date).strftime("%Y-%m-%d"),
+            "murder_method": self.method,
+            "murder_motive": self.motive,
             "characters": []
         }
         for p in self.people:

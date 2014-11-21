@@ -42,6 +42,10 @@ class Generator:
                         cfg_current_date.strftime("%Y-%m-%d")
                     ))
 
+        # We need at least 3 characters
+        if self.options["NB_CHARACTERS"] < 3:
+            raise InputConstraintException("Needs at least 3 characters to set up a mystery")
+
         # Check if the date span is valid
         if self.options["CURRENT_DATE"] <= self.options["START_DATE"]:
             raise InputConstraintException("The start date must be before the current date")
