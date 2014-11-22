@@ -9,7 +9,7 @@ The output can then be fed into other programs dealing with things like NLP (to 
 
 How to run
 ----------
-> python -m mmgen
+> python3 -m mmgen
 
 To use a custom specfile:
-> python -m mmgen myspecfile
+> python3 -m mmgen myspecfile
