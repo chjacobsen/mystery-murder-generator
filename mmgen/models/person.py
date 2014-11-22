@@ -15,6 +15,7 @@ class Person:
     birth_date = None
     is_murderer = False
     is_victim = False
+    relations = None
 
     # Personal attributes
     # Each attribute uses 0.0 as an average
@@ -40,6 +41,7 @@ class Person:
 
     def __init__(self):
         self.gender = random.randint(0,1)
+        self.relations = []
 
         # Random last name
         self.last_name = random.choice(names.LAST_NAME)
@@ -49,6 +51,9 @@ class Person:
             self.first_name = random.choice(names.FIRST_NAME_MALE)
         else:
             self.first_name = random.choice(names.FIRST_NAME_FEMALE)
+
+    def full_name(self):
+        return " ".join([self.first_name, self.last_name])
 
     def encode(self):
         """
@@ -61,8 +66,12 @@ class Person:
             "birth_date": datetime.datetime.fromtimestamp(self.birth_date).strftime("%Y-%m-%d"),
             "is_victim": self.is_victim,
             "is_murderer": self.is_murderer,
-            "attributes": {}
+            "attributes": {},
+            "num_relations": len(self.relations),
+            "relations": []
         }
         for att in self.attributes.keys():
             out["attributes"][att] = self.attributes[att]
+        for rel in self.relations:
+            out["relations"].append([rel.rel_subject.full_name(), rel.rel_object.full_name(), rel.type_name])
         return out

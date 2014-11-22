@@ -2,6 +2,7 @@ import random
 import datetime
 import logging
 from mmgen.data import murder
+from mmgen.data.relation import RELATION_TYPES
 from mmgen.models import person
 from mmgen.util.randomize import weighted_roll
 logging.basicConfig(level=logging.INFO)
@@ -33,6 +34,20 @@ class Mystery:
         self.motive = weighted_roll(murder.MURDER_MOTIVE)
         self.people[0].is_victim = True
         self.people[1].is_murderer = True
+        for pa in range(len(self.people)):
+            pers_a = self.people[pa]
+            for pb in range(pa + 1, len(self.people)):
+                pers_b = self.people[pb]
+
+                rel_type = weighted_roll(RELATION_TYPES)
+                relobj = rel_type(pers_a, pers_b)
+
+                # A little crude, might need optimization
+                while not relobj.is_sane():
+                    rel_type = weighted_roll(RELATION_TYPES)
+                    relobj = rel_type(pers_a, pers_b)
+                pers_a.relations.append(relobj)
+                pers_b.relations.append(relobj)
 
     def encode(self):
         """
