@@ -4,6 +4,7 @@ from mmgen.util.randomize import weighted_roll
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
+BASE_PROBABILITY = 100
 
 def generate (person_a, person_b):
     """
@@ -12,7 +13,7 @@ def generate (person_a, person_b):
     roll_table = {}
     for rel_type in RELATION_TYPES:
         relobj = rel_type(person_a, person_b)
-        odds = int(round(relobj.base_odds * relobj.get_chance_modifier()))
+        odds = int(round(relobj.get_chance()))
         if odds > 0:
             roll_table[relobj] = odds
     logger.info("Relation roll table: " + str(roll_table))
@@ -23,23 +24,20 @@ def generate (person_a, person_b):
 
 class Relationship:
 
-    base_odds = 100
     type_name = "RELATION"
 
     rel_subject = None
     rel_object = None
 
-    def get_chance_modifier (self):
+    def get_chance (self):
         """
-        Returns a single float determining the relative probability of this relationship
+        Returns the odds of a particular relationship existing
 
-        Returning 2.0 will mean there is a twice as high as normal chance for the relationship to exist
+        Higher numbers mean higher probability
 
-        Returning 1.0 will mean there is no change to the modifier
-
-        Returning 0.0 will mean that there is no chance for the relationship to exist
+        A probability of 0 means the relationship cannot exist under the given conditions
         """
-        return 1.0
+        return BASE_PROBABILITY
 
     def pick_subject(self, person_a, person_b):
         """
@@ -60,13 +58,12 @@ class Relationship:
 
 class Parent(Relationship):
 
-    base_odds = 40
     type_name = "PARENT_CHILD"
 
-    def get_chance_modifier(self):
+    def get_chance(self):
         if self.rel_object.birth_date - self.rel_subject.birth_date < 3600 * 24 * 365 * 18:
             return 0.0
-        return 1.0
+        return BASE_PROBABILITY * 0.4
 
     def pick_subject(self, person_a, person_b):
         if person_a.birth_date < person_b.birth_date:
@@ -74,7 +71,6 @@ class Parent(Relationship):
         return person_b
 
 class Friend(Relationship):
-    base_odds = 100
     type_name = "FRIEND"
 
 
