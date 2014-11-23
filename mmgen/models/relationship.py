@@ -1,23 +1,45 @@
 import random
+import logging
+from mmgen.util.randomize import weighted_roll
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
 
 
 def generate (person_a, person_b):
     """
     Generates a relationship between two people
     """
+    roll_table = {}
+    for rel_type in RELATION_TYPES:
+        relobj = rel_type(person_a, person_b)
+        odds = int(round(relobj.base_odds * relobj.get_chance_modifier()))
+        if odds > 0:
+            roll_table[relobj] = odds
+    logger.info("Relation roll table: " + str(roll_table))
+
+    relobj = weighted_roll(roll_table)
+    person_a.relations.append(relobj)
+    person_b.relations.append(relobj)
 
 class Relationship:
 
+    base_odds = 100
     type_name = "RELATION"
 
     rel_subject = None
     rel_object = None
 
-    def is_sane (self):
+    def get_chance_modifier (self):
         """
-        Determines whether the relationship, as currently set, makes sense
+        Returns a single float determining the relative probability of this relationship
+
+        Returning 2.0 will mean there is a twice as high as normal chance for the relationship to exist
+
+        Returning 1.0 will mean there is no change to the modifier
+
+        Returning 0.0 will mean that there is no chance for the relationship to exist
         """
-        return True
+        return 1.0
 
     def pick_subject(self, person_a, person_b):
         """
@@ -38,12 +60,13 @@ class Relationship:
 
 class Parent(Relationship):
 
+    base_odds = 40
     type_name = "PARENT_CHILD"
 
-    def is_sane(self):
+    def get_chance_modifier(self):
         if self.rel_object.birth_date - self.rel_subject.birth_date < 3600 * 24 * 365 * 18:
-            return False
-        return True
+            return 0.0
+        return 1.0
 
     def pick_subject(self, person_a, person_b):
         if person_a.birth_date < person_b.birth_date:
@@ -51,5 +74,13 @@ class Parent(Relationship):
         return person_b
 
 class Friend(Relationship):
-
+    base_odds = 100
     type_name = "FRIEND"
+
+
+
+# Weighted list for rolling relationships
+RELATION_TYPES = [
+    Friend,
+    Parent,
+]
