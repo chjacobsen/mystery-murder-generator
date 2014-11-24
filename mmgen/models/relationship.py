@@ -87,10 +87,46 @@ class Friend(Relationship):
 
     type_name = "FRIEND"
 
+class Married(Relationship):
+    """
+    Legally married couple
+    """
+
+    type_name = "MARRIED"
+
+    def get_chance(self):
+
+        probability = BASE_PROBABILITY * 0.4
+
+        # At this point, most of the assertions are based on early-mid 1900s, which means same-sex marriage is unlikely
+        # Should be configurable at some point
+        if self.rel_subject.gender == self.rel_object.gender:
+            return 0.0
+
+        # Check age difference. For now, just deny any age differences above 8 years
+        significant_age_diff = abs(self.rel_subject.birth_date - self.rel_object.birth_date) - (3600 * 24 * 365 * 8)
+        if significant_age_diff > 0:
+            return 0.0
+
+        # Still dealing with western society right now, so one marriage per person
+        # Should be configurable at some point
+        for rel in self.rel_subject.relations + self.rel_object.relations:
+            if rel.type_name == self.type_name:
+                return 0.0
+
+        # Given the previous assertion of cultural context,
+        # non-straight people are unlikely to marry, though it might happen as a facade
+        if self.rel_subject.sexuality == "GAY" or self.rel_object.sexuality == "GAY":
+            probability = probability * 0.2
+
+
+        return probability
+
 
 
 # Weighted list for rolling relationships
 RELATION_TYPES = [
     Friend,
     Parent,
+    Married,
 ]

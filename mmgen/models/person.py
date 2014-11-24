@@ -2,6 +2,8 @@ import random
 import datetime
 import logging
 from mmgen.data import names
+from mmgen.data import sexuality
+from mmgen.util.randomize import weighted_roll
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
@@ -16,6 +18,7 @@ class Person:
     is_murderer = False
     is_victim = False
     relations = None
+    sexuality = None
 
     # Personal attributes
     # Each attribute uses 0.0 as an average
@@ -40,8 +43,11 @@ class Person:
     }
 
     def __init__(self):
-        self.gender = random.randint(0,1)
         self.relations = []
+
+
+        self.gender = random.randint(0,1)
+        self.sexuality = weighted_roll(sexuality.ORIENTATION)
 
         # Random last name
         self.last_name = random.choice(names.LAST_NAME)
@@ -64,10 +70,11 @@ class Person:
             "first_name": self.first_name,
             "last_name": self.last_name,
             "birth_date": datetime.datetime.fromtimestamp(self.birth_date).strftime("%Y-%m-%d"),
+            "gender": self.gender,
+            "sexuality": self.sexuality,
             "is_victim": self.is_victim,
             "is_murderer": self.is_murderer,
             "attributes": {},
-            "num_relations": len(self.relations),
             "relations": []
         }
         for att in self.attributes.keys():
