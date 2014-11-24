@@ -13,3 +13,11 @@ How to run
 
 To use a custom specfile:
 > python3 -m mmgen myspecfile
+
+
+Contact
+-------
+
+Most of the discussion regarding the project goes on on IRC, \#\#procedural on freenode.
+
+You can also check out http://www.reddit.com/r/proceduralgeneration
