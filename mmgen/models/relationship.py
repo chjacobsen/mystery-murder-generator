@@ -57,12 +57,22 @@ class Relationship:
         return [self.type_name, self.rel_subject.full_name(), self.rel_object.full_name()]
 
 class Parent(Relationship):
+    """
+    The subject is the biological parent of the object
+    """
 
     type_name = "PARENT_CHILD"
 
     def get_chance(self):
+        # Check that there is a reasonable minimum age difference
         if self.rel_object.birth_date - self.rel_subject.birth_date < 3600 * 24 * 365 * 18:
             return 0.0
+
+        # Since we're dealing with biological parents, ensure there's a maximum of one for each gender
+        for rel in self.rel_object.relations:
+            if rel.type_name == self.type_name and rel.rel_subject.gender == self.rel_subject.gender:
+                return 0.0
+
         return BASE_PROBABILITY * 0.4
 
     def pick_subject(self, person_a, person_b):
@@ -71,6 +81,10 @@ class Parent(Relationship):
         return person_b
 
 class Friend(Relationship):
+    """
+    A generic friendship, a relationship type without many prerequisites
+    """
+
     type_name = "FRIEND"
 
 
