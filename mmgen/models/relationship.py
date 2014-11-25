@@ -122,11 +122,20 @@ class Married(Relationship):
 
         return probability
 
+class BusinessPartner(Relationship):
+    """
+    The characters has or have had business dealings in the past
+    """
 
+    type_name = "BUSINESS_PARTNER"
+
+    def get_chance(self):
+        return BASE_PROBABILITY * 0.2
 
 # Weighted list for rolling relationships
 RELATION_TYPES = [
     Friend,
     Parent,
     Married,
+    BusinessPartner,
 ]
