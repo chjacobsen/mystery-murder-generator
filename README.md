@@ -15,6 +15,11 @@ To use a custom specfile:
 > python3 -m mmgen myspecfile
 
 
+How to contribute
+-----------------
+There's plenty to do, from small hacks to bigger features. Check the TODO file for more details.
+
+
 Contact
 -------
 
