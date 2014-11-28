@@ -20,6 +20,11 @@ class Person:
     relations = None
     sexuality = None
 
+    # An indicator if wealth and influence.
+    # A 1 represents someone power and pennyless
+    # A 10 would reflect royalty or a very high calibre businessman
+    social_status = None
+
     # Personal attributes
     # Each attribute uses 0.0 as an average
     attributes = {
@@ -49,6 +54,8 @@ class Person:
         self.gender = random.randint(0,1)
         self.sexuality = weighted_roll(sexuality.ORIENTATION)
 
+        self.social_status = 1 + random.randint(0,3) + random.randint(0,3) + random.randint(0,3)
+
         # Random last name
         self.last_name = random.choice(names.LAST_NAME)
 
@@ -72,6 +79,7 @@ class Person:
             "birth_date": datetime.datetime.fromtimestamp(self.birth_date).strftime("%Y-%m-%d"),
             "gender": self.gender,
             "sexuality": self.sexuality,
+            "social_status": self.social_status,
             "is_victim": self.is_victim,
             "is_murderer": self.is_murderer,
             "attributes": {},
