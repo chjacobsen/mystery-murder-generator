@@ -130,7 +130,14 @@ class BusinessPartner(Relationship):
     type_name = "BUSINESS_PARTNER"
 
     def get_chance(self):
-        return BASE_PROBABILITY * 0.2
+        probability = BASE_PROBABILITY * 0.3
+
+        # Business relationship happens across the spectrum, but is more likely at the higher ranks
+        # With this in mind, cut the probability a bit when either of the parties have a lower status
+        if self.rel_subject.social_status < 4 or self.rel_object.social_status < 4:
+            probability = probability * 0.5
+
+        return probability
 
 # Weighted list for rolling relationships
 RELATION_TYPES = [
