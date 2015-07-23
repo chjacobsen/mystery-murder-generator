@@ -20,8 +20,8 @@ class Generator:
         "NB_CHARACTERS": 7,
 
         # Note that a timestamp of zero represents 1970, and the earliest supported year is 1900
-        "START_DATE": -3600 * 24 * 365 * 60,
-        "CURRENT_DATE": 3600 * 24 * 365 * 10,
+        "START_DATE": 3600 * 24 * 365 * 0,
+        "CURRENT_DATE": 3600 * 24 * 365 * 20,
     }
 
     def generate(self):
@@ -30,6 +30,7 @@ class Generator:
         """
         logger.info("Generating new mystery")
         myst = mystery.Mystery()
+        print(self.options)
 
         myst.start_date = self.options["START_DATE"]
         myst.current_date = self.options["CURRENT_DATE"]
